@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -873,8 +874,18 @@
         </div>
 
         <div class="nav-cta">
-          <button class="btn btn-ghost" type="button">View prototype</button>
-          <button class="btn btn-primary" type="button">Join waitlist</button>
+            <!--opens prototype in a new tab-->
+            <a href="https://thunkable.site/w/-QZsAryYS5FltQCF8FQYt"
+            class="btn btn-ghost"
+            target="_blank"
+            rel="noreferrer">
+            View prototype
+           </a>
+
+           <!-- scrolls to contact section (waitlist form)-->
+            <a href="#contact" class="btn btn-primary">
+                Join waitlist
+            </a>
         </div>
 
         <button class="nav-toggle" type="button" aria-label="Toggle navigation" onclick="toggleNav()">
@@ -890,9 +901,26 @@
         <a href="#impact" onclick="toggleNav()">Impact</a>
         <a href="#about" onclick="toggleNav()">About</a>
         <a href="#contact" onclick="toggleNav()">Contact</a>
-        <div class="nav-mobile-cta">
-          <button class="btn btn-ghost" type="button">View prototype</button>
-          <button class="btn btn-primary" type="button">Join waitlist</button>
+
+    <div class="nav-mobile-cta">
+        <a href="https://thunkable.site/w/-QZsAryYS5FltQCF8FQYt" 
+            class="btn btn-ghost" 
+            target="_blank" 
+            rel="noreferrer"
+            onclick="toggleNav()">
+            View prototype
+        </a>
+
+        <a href="#contact" 
+            class="btn btn-primary"
+            onclick="toggleNav()">
+            Join waitlist
+        </a>
+    </div>
+
+        
+          
+
         </div>
       </div>
     </div>
@@ -1129,7 +1157,7 @@
         <div class="section-eyebrow">Impact metrics</div>
         <h2 class="section-title">Good intentions are cute. Numbers are better.</h2>
         <p class="section-subtitle">
-          Plug your BTYSE / SciFest research here – real data from your case studies, surveys and experiments.
+         Explore wardrobe estimate impact footprint ranges, and reflect.
         </p>
       </div>
 
@@ -1140,7 +1168,7 @@
               <div class="impact-label">CO₂ avoided*</div>
               <div class="impact-value">XXX kg+</div>
               <div class="impact-note">
-                Replace <strong>XXX</strong> with your calculated emissions saved from swaps vs new purchases.
+               Your calculated emissions saved from swaps vs new purchases.
               </div>
             </div>
             <div class="impact-card">
@@ -1154,13 +1182,12 @@
               <div class="impact-label">Water saved*</div>
               <div class="impact-value">XX,XXX L+</div>
               <div class="impact-note">
-                Based on your data for jeans, t-shirts, etc. Use the same methodology as in your project book.
+                Based on your data for jeans, t-shirts, etc. 
               </div>
             </div>
           </div>
 
           <p class="impact-note">
-            *All figures here are placeholders – update them with your actual calculations, assumptions and sources.
           </p>
         </div>
 
@@ -1255,18 +1282,15 @@
         <div class="contact-meta">
           <div class="meta-block">
             <div class="meta-label">Email</div>
-            <div class="meta-value">your-email-here@example.com</div>
-            <div class="meta-small">Swap this for your real contact email (e.g. BTYSE / project email).</div>
+            <div class="meta-value">fola4280@gmail.com</div>
           </div>
           <div class="meta-block">
             <div class="meta-label">Based in</div>
             <div class="meta-value">Ireland · Student-led project</div>
-            <div class="meta-small">Focused on piloting ReThread with schools, youth groups and local communities.</div>
           </div>
           <div class="meta-block">
             <div class="meta-label">Socials (optional)</div>
-            <div class="meta-value">Instagram / TikTok handle here</div>
-            <div class="meta-small">When you’re ready, this becomes your community funnel: challenges, swaps, behind-the-scenes.</div>
+            <div class="meta-value">Instagram: @_re.thread_</div>
           </div>
         </div>
       </div>
@@ -1284,23 +1308,24 @@
   </main>
 
   <script>
-    // Simple year + mobile nav script
-    document.getElementById('year').textContent = new Date().getFullYear();
+  // Simple year + mobile nav script
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-    function toggleNav() {
-      const nav = document.getElementById('navMobile');
-      if (!nav) return;
-      const isOpen = nav.style.display === 'block';
-      nav.style.display = isOpen ? 'none' : 'block';
+  function toggleNav() {
+    const nav = document.getElementById('navMobile');
+    if (!nav) return;
+    const isOpen = nav.style.display === 'block';
+    nav.style.display = isOpen ? 'none' : 'block';
+  }
+
+  // Close mobile nav on resize up
+  window.addEventListener('resize', () => {
+    const nav = document.getElementById('navMobile');
+    if (window.innerWidth > 640 && nav) {
+      nav.style.display = 'none';
     }
+  });
+</script>
 
-    // Close mobile nav on resize up
-    window.addEventListener('resize', () => {
-      const nav = document.getElementById('navMobile');
-      if (window.innerWidth > 640 && nav) {
-        nav.style.display = 'none';
-      }
-    });
-  </script>
 </body>
 </html>

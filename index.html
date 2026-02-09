@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReThread | Rethink Your Wardrobe</title>
+  <meta name="description" content="ReThread is a circular fashion app with a SwapShop marketplace, CO₂ tracker, AI Wardrobe, and upcycling tutorials to help you build a more sustainable wardrobe." />
+
+  <!-- Optional Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #060606;
+      --card-bg: #111111;
+      --accent: #4ade80; /* soft green */
+      --accent-soft: rgba(74, 222, 128, 0.12);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: #1f2933;
+      --danger: #f97373;
+      --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.45);
+      --radius-xl: 1.5rem;
+      --radius-lg: 1rem;
+      --radius-pill: 999px;
+      --max-width: 1120px;
+      --nav-height: 70px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #111827 0, #020617 45%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 4rem;
+    }
+
+    /* NAVBAR */
+
+    .navbar-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+    }
+
+    .navbar {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 0.9rem;
+      background: radial-gradient(circle at 30% 20%, var(--accent) 0, #16a34a 28%, #052e16 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #020617;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand-text-title {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    .brand-text-sub {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.85rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      position: relative;
+      padding-bottom: 0.15rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), #bbf7d0);
+      transition: width 0.18s ease-out;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      border-radius: var(--radius-pill);
+      padding: 0.55rem 1.1rem;
+      font-size: 0.85rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, background 0.12s ease-out, border-color 0.12s ease-out, color 0.12s ease-out;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, var(--accent), #22c55e);
+      color: #022c22;
+      box-shadow: var(--shadow-soft);
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 30px rgba(34, 197, 94, 0.35);
+    }
+
+    .btn-ghost {
+      border-color: var(--border-subtle);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent-soft);
+      background: rgba(15, 23, 42, 1);
+      color: var(--text-main);
+    }
+
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: transparent;
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 1.3rem;
+    }
+
+    /* HERO */
+
+    main {
+      margin-top: 1.5rem;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .hero-copy {
+      position: relative;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.2rem 0.35rem 0.2rem 0.25rem;
+      margin-bottom: 0.65rem;
+      background: radial-gradient(circle at top left, rgba(74, 222, 128, 0.26), rgba(15, 23, 42, 0.9));
+      font-size: 0.7rem;
+      color: #e5e7eb;
+    }
+
+    .hero-pill span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(163, 230, 53, 0.7);
+      font-size: 0.65rem;
+    }
+
+    .hero-title {
+      font-size: 2.4rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, var(--accent), #bbf7d0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      max-width: 34rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-subtitle strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-footnote {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .hero-footnote span {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-top: 1.4rem;
+      font-size: 0.85rem;
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .metric-label {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .metric-value {
+      font-weight: 600;
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      border-radius: var(--radius-xl);
+      padding: 1.4rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .hero-card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .hero-card-tag {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-muted);
+    }
+
+    .hero-card-body {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .outfit-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      font-size: 0.8rem;
+    }
+
+    .outfit-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.55rem 0.7rem;
+      border-radius: 0.9rem;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(30, 64, 175, 0.3);
+    }
+
+    .outfit-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .outfit-title {
+      font-weight: 500;
+    }
+
+    .outfit-meta {
+      display: flex;
+      gap: 0.55rem;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      border-radius: var(--radius-pill);
+      padding: 0.05rem 0.45rem;
+      font-size: 0.65rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    .badge-green {
+      border-color: rgba(74, 222, 128, 0.9);
+      color: #bbf7d0;
+    }
+
+    .badge-amber {
+      border-color: #fbbf24;
+      color: #fef3c7;
+    }
+
+    .outfit-score {
+      text-align: right;
+      font-size: 0.75rem;
+    }
+
+    .score-label {
+      color: var(--text-muted);
+    }
+
+    .score-value {
+      font-weight: 600;
+    }
+
+    .score-chip {
+      margin-top: 0.2rem;
+      border-radius: var(--radius-pill);
+      padding: 0.1rem 0.4rem;
+      font-size: 0.65rem;
+      background: rgba(22, 163, 74, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #bbf7d0;
+    }
+
+    .hero-stats-card {
+      font-size: 0.75rem;
+      border-radius: 1rem;
+      padding: 0.75rem 0.9rem;
+      border: 1px dashed rgba(75, 85, 99, 0.8);
+      background: radial-gradient(circle at top left, rgba(74, 222, 128, 0.16), rgba(15, 23, 42, 0.98));
+      margin-top: 1rem;
+    }
+
+    .hero-stats-card strong {
+      color: #e5e7eb;
+    }
+
+    /* SECTION WRAPPERS */
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    .section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 32rem;
+    }
+
+    /* FEATURES */
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      background: linear-gradient(145deg, #020617, #020617 55%, #0b1120);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .feature-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 0.75rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(74, 222, 128, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .feature-body {
+      color: var(--text-muted);
+    }
+
+    .feature-tag {
+      margin-top: auto;
+      margin-top: 0.35rem;
+      font-size: 0.7rem;
+      color: #a7f3d0;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* HOW IT WORKS */
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .step-card {
+      background: #020617;
+      border-radius: 1rem;
+      padding: 0.95rem;
+      border: 1px solid var(--border-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-number {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-body {
+      color: var(--text-muted);
+    }
+
+    /* IMPACT */
+
+    .impact-layout {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      font-size: 0.8rem;
+    }
+
+    .impact-card {
+      border-radius: 1rem;
+      background: radial-gradient(circle at top left, rgba(74, 222, 128, 0.12), #020617);
+      border: 1px solid var(--border-subtle);
+      padding: 0.9rem;
+    }
+
+    .impact-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      margin-bottom: 0.25rem;
+    }
+
+    .impact-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+    }
+
+    .impact-note {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+    }
+
+    .impact-note strong {
+      color: #e5e7eb;
+    }
+
+    .impact-callout {
+      border-radius: 1rem;
+      border: 1px dashed rgba(148, 163, 184, 0.8);
+      padding: 1rem;
+      font-size: 0.8rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .impact-callout strong {
+      color: var(--accent);
+    }
+
+    /* ABOUT */
+
+    .about-body {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 1.5rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .about-highlight {
+      border-radius: 1.1rem;
+      border: 1px solid var(--border-subtle);
+      padding: 1rem;
+      background: radial-gradient(circle at top left, rgba(74, 222, 128, 0.1), #020617);
+      font-size: 0.8rem;
+    }
+
+    .about-highlight-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.35rem;
+      color: var(--text-main);
+    }
+
+    ul {
+      padding-left: 1.1rem;
+      margin-top: 0.3rem;
+    }
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+
+    /* CONTACT */
+
+    .contact-card {
+      border-radius: var(--radius-lg);
+      padding: 1.3rem;
+      border: 1px solid var(--border-subtle);
+      background: #020617;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .field label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .field input,
+    .field textarea {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-subtle);
+      padding: 0.6rem 0.7rem;
+      background: #020617;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      outline: 1px solid rgba(74, 222, 128, 0.4);
+      border-color: rgba(74, 222, 128, 0.8);
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .contact-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .meta-block {
+      border-radius: 0.9rem;
+      border: 1px solid var(--border-subtle);
+      padding: 0.7rem 0.8rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .meta-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 0.15rem;
+    }
+
+    .meta-value {
+      font-size: 0.85rem;
+    }
+
+    .meta-small {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* FOOTER */
+
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--text-main);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .impact-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .about-body {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .contact-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding-inline: 1rem;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .feature-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .steps-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .impact-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-mobile {
+        display: none;
+        position: fixed;
+        inset: var(--nav-height) 0 auto 0;
+        background: rgba(3, 7, 18, 0.98);
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid var(--border-subtle);
+        z-index: 40;
+      }
+
+      .nav-mobile-inner {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 0.75rem 1.25rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .nav-mobile a {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        padding-block: 0.25rem;
+      }
+
+      .nav-mobile a:hover {
+        color: var(--text-main);
+      }
+
+      .nav-mobile-cta {
+        margin-top: 0.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar-wrapper">
+    <div class="page" style="padding-bottom: 0;">
+      <nav class="navbar">
+        <div class="brand">
+          <div class="brand-logo">Re</div>
+          <div>
+            <div class="brand-text-title">ReThread</div>
+            <div class="brand-text-sub">Rethink Your Wardrobe</div>
+          </div>
+        </div>
+
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#impact">Impact</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+
+        <div class="nav-cta">
+          <button class="btn btn-ghost" type="button">View prototype</button>
+          <button class="btn btn-primary" type="button">Join waitlist</button>
+        </div>
+
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation" onclick="toggleNav()">
+          ☰
+        </button>
+      </nav>
+    </div>
+
+    <div class="nav-mobile" id="navMobile">
+      <div class="nav-mobile-inner">
+        <a href="#features" onclick="toggleNav()">Features</a>
+        <a href="#how-it-works" onclick="toggleNav()">How it works</a>
+        <a href="#impact" onclick="toggleNav()">Impact</a>
+        <a href="#about" onclick="toggleNav()">About</a>
+        <a href="#contact" onclick="toggleNav()">Contact</a>
+        <div class="nav-mobile-cta">
+          <button class="btn btn-ghost" type="button">View prototype</button>
+          <button class="btn btn-primary" type="button">Join waitlist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <div class="hero-pill">
+          <span>♻</span>
+          <div>Turning fast fashion into future fashion</div>
+        </div>
+        <h1 class="hero-title">
+          Build a wardrobe that’s <span>kind to the planet</span>.
+        </h1>
+        <p class="hero-subtitle">
+          ReThread combines a <strong>SwapShop marketplace</strong>, <strong>CO₂ tracker</strong>, <strong>AI wardrobe assistant</strong>, and <strong>upcycling tutorials</strong> into one app –
+          so every outfit is a better decision, not just a nicer photo.
+        </p>
+
+        <div class="hero-cta-row">
+          <a href="#contact" class="btn btn-primary">I want early access →</a>
+          <a href="#features" class="btn btn-ghost">Explore features</a>
+        </div>
+
+        <p class="hero-footnote">
+          Designed by teens, for the next generation of circular fashion. <span>No greenwashing. Just data.</span>
+        </p>
+
+        <div class="hero-metrics">
+          <div class="metric">
+            <div class="metric-label">Prototype</div>
+            <div class="metric-value">Mobile app &amp; AI engine</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Focus</div>
+            <div class="metric-value">Swap, track, upcycle, repeat</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Stage</div>
+            <div class="metric-value">Student-led MVP in progress</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div>
+              <div class="hero-card-title">AI Wardrobe · ReThread</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">
+                Suggested outfits · Sustainability score
+              </div>
+            </div>
+            <div class="hero-card-tag">Preview</div>
+          </div>
+          <div class="hero-card-body">
+            <div class="outfit-list">
+              <div class="outfit-row">
+                <div class="outfit-main">
+                  <div class="outfit-title">Sunday SwapFit</div>
+                  <div class="outfit-meta">
+                    <span class="badge badge-green">–3.2 kg CO₂ vs new</span>
+                    <span>Upcycled denim · Swap top</span>
+                  </div>
+                </div>
+                <div class="outfit-score">
+                  <div class="score-label">Impact</div>
+                  <div class="score-value">Low</div>
+                  <div class="score-chip">Planet-friendly</div>
+                </div>
+              </div>
+
+              <div class="outfit-row">
+                <div class="outfit-main">
+                  <div class="outfit-title">College Chill</div>
+                  <div class="outfit-meta">
+                    <span class="badge badge-amber">–0.8 kg CO₂</span>
+                    <span>Second-hand hoodie · Sneaks</span>
+                  </div>
+                </div>
+                <div class="outfit-score">
+                  <div class="score-label">Impact</div>
+                  <div class="score-value">Medium</div>
+                  <div class="score-chip" style="background: rgba(234, 179, 8, 0.1); border-color: #facc15; color: #fef9c3;">
+                    Swap one more item
+                  </div>
+                </div>
+              </div>
+
+              <div class="outfit-row">
+                <div class="outfit-main">
+                  <div class="outfit-title">Event Glow-Up</div>
+                  <div class="outfit-meta">
+                    <span class="badge">+2.5 kg CO₂</span>
+                    <span>Mostly new pieces</span>
+                  </div>
+                </div>
+                <div class="outfit-score">
+                  <div class="score-label">Impact</div>
+                  <div class="score-value">High</div>
+                  <div class="score-chip" style="background: rgba(239, 68, 68, 0.1); border-color: #f87171; color: #fecaca;">
+                    Try rental &amp; swaps
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-stats-card">
+              <strong>ReThread Insight:</strong> Swapping just <strong>1 outfit per month</strong> instead of buying new can cut the average wardrobe’s annual carbon footprint by a meaningful chunk.
+              Plug in your real data here from your BTYSE / SciFest results.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <div class="section-header">
+        <div class="section-eyebrow">Product stack</div>
+        <h2 class="section-title">One app, five ways to fix your fashion footprint.</h2>
+        <p class="section-subtitle">
+          ReThread is built as a circular fashion hub – not another shop. It nudges users from “add to cart” to “swap, track, and repair”.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon">⇄</div>
+          <h3 class="feature-title">SwapShop Marketplace</h3>
+          <p class="feature-body">
+            Upload items with photos, size, condition and category. Browse, like and swap with others instead of buying new.
+          </p>
+          <p class="feature-tag">Reduce waste</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">CO₂</div>
+          <h3 class="feature-title">Carbon Footprint Tracker</h3>
+          <p class="feature-body">
+            Estimate CO₂ and water impact per item using material, condition and lifespan data. Compare “new vs second-hand vs upcycled”.
+          </p>
+          <p class="feature-tag">Data, not vibes</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">★</div>
+          <h3 class="feature-title">AI Wardrobe Assistant</h3>
+          <p class="feature-body">
+            Suggest outfits from clothes you already own, swap or upcycle – plus gentle nudges when an outfit’s footprint is high.
+          </p>
+          <p class="feature-tag">Smart choices</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">✂</div>
+          <h3 class="feature-title">Upcycling Tutorials</h3>
+          <p class="feature-body">
+            Step-by-step tutorials to turn “I never wear this” clothes into something new – from crop tops to tote bags and beyond.
+          </p>
+          <p class="feature-tag">Create value</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 class="feature-title">Community &amp; Challenges</h3>
+          <p class="feature-body">
+            Monthly challenges and local swaps that make low-impact fashion feel like a game, not a lecture.
+          </p>
+          <p class="feature-tag">Make it social</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Impact Dashboard</h3>
+          <p class="feature-body">
+            Track your personal “ReThread score” – outfits saved, CO₂ avoided, and items rescued from landfill.
+          </p>
+          <p class="feature-tag">See the wins</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works">
+      <div class="section-header">
+        <div class="section-eyebrow">User journey</div>
+        <h2 class="section-title">From “I’ve nothing to wear” to “I’ve options”.</h2>
+        <p class="section-subtitle">
+          ReThread fits into everyday behaviour – scroll, outfit plan, share – and quietly shifts it towards circular fashion.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <article class="step-card">
+          <div class="step-number">Step 01</div>
+          <div class="step-title">Scan your wardrobe</div>
+          <p class="step-body">
+            Add items using quick forms and photos. Tag material, condition and how often you wear them.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <div class="step-number">Step 02</div>
+          <div class="step-title">Get your footprint</div>
+          <p class="step-body">
+            ReThread estimates CO₂ and water impact across your wardrobe and highlights “hotspots”.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <div class="step-number">Step 03</div>
+          <div class="step-title">Swap, upcycle, repeat</div>
+          <p class="step-body">
+            List high-impact, low-use items on the SwapShop or choose an upcycling path instead of buying new.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <div class="step-number">Step 04</div>
+          <div class="step-title">Track your wins</div>
+          <p class="step-body">
+            Watch your ReThread score improve as you swap more, buy less, and stretch each item’s life.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section id="impact">
+      <div class="section-header">
+        <div class="section-eyebrow">Impact metrics</div>
+        <h2 class="section-title">Good intentions are cute. Numbers are better.</h2>
+        <p class="section-subtitle">
+          Plug your BTYSE / SciFest research here – real data from your case studies, surveys and experiments.
+        </p>
+      </div>
+
+      <div class="impact-layout">
+        <div>
+          <div class="impact-grid">
+            <div class="impact-card">
+              <div class="impact-label">CO₂ avoided*</div>
+              <div class="impact-value">XXX kg+</div>
+              <div class="impact-note">
+                Replace <strong>XXX</strong> with your calculated emissions saved from swaps vs new purchases.
+              </div>
+            </div>
+            <div class="impact-card">
+              <div class="impact-label">Items rescued</div>
+              <div class="impact-value">XX+</div>
+              <div class="impact-note">
+                Number of items swapped or upcycled instead of being binned or left unworn.
+              </div>
+            </div>
+            <div class="impact-card">
+              <div class="impact-label">Water saved*</div>
+              <div class="impact-value">XX,XXX L+</div>
+              <div class="impact-note">
+                Based on your data for jeans, t-shirts, etc. Use the same methodology as in your project book.
+              </div>
+            </div>
+          </div>
+
+          <p class="impact-note">
+            *All figures here are placeholders – update them with your actual calculations, assumptions and sources.
+          </p>
+        </div>
+
+        <aside class="impact-callout">
+          <strong>Why this matters for investors / judges:</strong><br><br>
+          ReThread doesn’t just “raise awareness”. It <strong>quantifies behaviour change</strong> at user level
+          and aggregates it at community level. That means clear KPIs: CO₂ avoided, items swapped, and adoption over time.
+        </aside>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-header">
+        <div class="section-eyebrow">The story</div>
+        <h2 class="section-title">Built from frustration with fast fashion, not from a boardroom.</h2>
+        <p class="section-subtitle">
+          ReThread started as a student project and grew into a serious attempt to make sustainable fashion actually convenient.
+        </p>
+      </div>
+
+      <div class="about-body">
+        <div>
+          <p>
+            ReThread is designed by a young person who lives inside the chaos of sales, micro-trends and “new haul every week” culture.
+            Instead of just telling people to “shop less”, the app quietly rewires the journey:
+            swap first, upcycle second, buy new last.
+          </p>
+          <p style="margin-top: 0.6rem;">
+            Under the hood, ReThread blends:
+          </p>
+          <ul>
+            <li>Research on the environmental and social impact of fashion supply chains.</li>
+            <li>Real-world case studies from charity shops, swap events and teen wardrobes.</li>
+            <li>AI suggestions that respect user style <em>and</em> sustainability constraints.</li>
+          </ul>
+        </div>
+
+        <aside class="about-highlight">
+          <div class="about-highlight-title">What makes ReThread different?</div>
+          <ul>
+            <li>Not another resale app – it’s swap + track + teach.</li>
+            <li>Built around teen and student behaviour, not ideal adults.</li>
+            <li>Backed by experiment data, not just vibes and Pinterest boards.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-header">
+        <div class="section-eyebrow">Let’s talk</div>
+        <h2 class="section-title">Want to test ReThread, support it, or collaborate?</h2>
+        <p class="section-subtitle">
+          Fill in the form below and we’ll get back to you. Judges, mentors, schools, youth groups and brands with a conscience are all welcome.
+        </p>
+      </div>
+
+      <div class="contact-card">
+        <form action="https://formsubmit.co/fola4280@gmail.com" method="POST" class="contact-form">
+            <!-- FormSubmit config -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_subject" value="New contact from ReThread website!">
+            <!-- If you want to redirect back to your site after submit, uncomment and fix URL -->
+            <!-- <input type="hidden" name="_next" value="http://127.0.0.1:5500/thank-you.html"> -->
+
+            <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="Name" type="text" placeholder="Your name" required />
+            </div>
+
+            <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="Email" type="email" placeholder="you@example.com" required />
+            </div>
+
+            <div class="field">
+                <label for="type">Who are you?</label>
+                <input id="type" name="Who are you" type="text" placeholder="Student, teacher, judge, NGO, brand…" />
+            </div>
+
+            <div class="field">
+                <label for="message">Message</label>
+                <textarea id="message" name="Message" placeholder="Tell us how you’d like to get involved."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send message</button>
+        </form>
+
+        <div class="contact-meta">
+          <div class="meta-block">
+            <div class="meta-label">Email</div>
+            <div class="meta-value">your-email-here@example.com</div>
+            <div class="meta-small">Swap this for your real contact email (e.g. BTYSE / project email).</div>
+          </div>
+          <div class="meta-block">
+            <div class="meta-label">Based in</div>
+            <div class="meta-value">Ireland · Student-led project</div>
+            <div class="meta-small">Focused on piloting ReThread with schools, youth groups and local communities.</div>
+          </div>
+          <div class="meta-block">
+            <div class="meta-label">Socials (optional)</div>
+            <div class="meta-value">Instagram / TikTok handle here</div>
+            <div class="meta-small">When you’re ready, this becomes your community funnel: challenges, swaps, behind-the-scenes.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div>© <span id="year"></span> ReThread. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#top">Back to top</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Simple year + mobile nav script
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function toggleNav() {
+      const nav = document.getElementById('navMobile');
+      if (!nav) return;
+      const isOpen = nav.style.display === 'block';
+      nav.style.display = isOpen ? 'none' : 'block';
+    }
+
+    // Close mobile nav on resize up
+    window.addEventListener('resize', () => {
+      const nav = document.getElementById('navMobile');
+      if (window.innerWidth > 640 && nav) {
+        nav.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
